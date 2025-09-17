@@ -1,16 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Requests;
 
-use App\Models\application;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ApplyController extends Controller
+class ApplyRequest extends FormRequest
 {
-    public function apply(Request $request)
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
     {
-        $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'id' => 'required|integer|exists:users,id',
             'dog_id' => 'required|integer|exists:dogs,dog_id',
             'application_date' => 'required|date',
             'status' => 'nullable|in:Pending,Approved,Rejected',
@@ -26,19 +38,7 @@ class ApplyController extends Controller
             'work_schedule' => 'required|string',
             'previous_experience' => 'required|string',
             'adoption_reason' => 'required|string'
-        ]);
         
-        $apply = application::create($validated);
-
-        return response()->json([
-            'message' => 'Application for selected dog is done',
-            'application' => $apply
-        ]);
-    }
-    public function userApplications($userId)
-    {
-        $applications = Application::with('dog')->where('user_id', $userId)->get();
-
-        return response()->json($applications);
+        ];
     }
 }

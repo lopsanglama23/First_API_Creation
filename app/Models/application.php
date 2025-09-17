@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class application extends Model
+class Application extends Model
 {
     protected $primaryKey = 'application_id';
     
@@ -26,4 +26,12 @@ class application extends Model
         'previous_experience',
         'adoption_reason'
     ];
+    public function dog() {
+        return $this->belongsTo(Dog::class, 'dog_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }
