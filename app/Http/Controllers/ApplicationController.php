@@ -1,16 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Resources\ApplicationResource;
 use App\Models\application;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
-class ApplicationController extends Controller
+class ApplicationController extends ResponseController
 {
     public function userApplications($userId)
     {
         $applications = Application::with('dog')->where('user_id', $userId)->get();
-        return response()->json($applications);
+        //return response()->json($applications);
+        return $this->responseSend("Aplications for dog." ,$applications);
+        //return response()->json(ApplicationResource::make($applications));
     }
 
     public function updatestatus(Request $request, $application_id){
@@ -26,9 +29,11 @@ class ApplicationController extends Controller
         }
         $apply->status = $Validated['status'];
         $apply->save();
-        return response()->json([
+        /*return response()->json([
             'message' => 'Application status updated successfully',
             'application' => $apply
-        ]);
+        ]);*/
+        return $this->responseSend('Application status Updated Succesfully', $apply);
+        
     }
 }

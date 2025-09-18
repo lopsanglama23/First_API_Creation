@@ -5,7 +5,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\TestController;
 use App\Models\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DogsController;
+use App\Http\Controllers\DogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApplyController;
 
@@ -17,14 +17,14 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 */
 
 /*Route::controller(DogsController::class)->prefix('dogs')->group(function () */
-Route::post('/dogs', [DogsController::class, 'store']);
-Route::put('/dogs/{id}', [DogsController::class, 'update']);
-Route::delete('/dogs/{id}',[DogsController::class,'delete']);
-Route::get('/dogs/search/{name}', [DogsController::class, 'search']);
-Route::get('/dogs/see/{term}', [DogsController::class, 'see']);
+Route::post('/dogs', [DogController::class, 'store']);
+Route::put('/dogs/{id}', [DogController::class, 'update']);
+Route::delete('/dogs/{id}',[DogController::class,'delete']);
+Route::get('/dogs/search/{name}', [DogController::class, 'search']);
+Route::get('/dogs/see/{term}', [DogController::class, 'see']);
 
 /*Route::controller(ApplyController::class)->prefix('apply')->group(function () */
-Route::get('/dogs/see/{term}', [DogsController::class, 'see']);
+Route::get('/dogs/see/{term}', [DogController::class, 'see']);
 Route::post('/apply', [ApplyController::class, 'apply']);
 
 Route::get('/users/{id}/applications', [ApplicationController::class, 'userApplications']);

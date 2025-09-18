@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\DogRequest;
+use App\Http\Resources\DogResourse;
 use App\Models\Dog;
 
-class DogsController extends BaseController
+class DogController extends BaseController
 {
     /*public function sendSuccessResponse($message, $data, $code=200)
     {
@@ -14,8 +15,9 @@ class DogsController extends BaseController
     public function store(DogRequest $request)
     {
         $validated = $request->validated();
+    //    dd($validated);
         $dog = Dog::create($validated);
-        return $this->sendResponse("Dog added", $dog);
+        return $this->sendResponse("Dog added", DogResourse::make($dog));
     }
 
     public function update(DogRequest $request, $id)
@@ -26,7 +28,7 @@ class DogsController extends BaseController
             return response()->json(["message" => "Dog not found"], 404);
         }
         $dog->update($validated);
-        return $this->sendResponse("Dog updated", $dog);
+        return $this->sendResponse("Dog updated", DogResourse::make($dog));
     }
 
     public function delete($id)
@@ -57,5 +59,9 @@ class DogsController extends BaseController
             return response()->json(["message" => "No dogs found"]);
         }
         return response()->json($dogs);
+    }
+
+    public function seeItemNames(){
+
     }
 }
