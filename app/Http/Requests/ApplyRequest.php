@@ -22,7 +22,7 @@ class ApplyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:users,id',
+            'user_id' => 'required|integer|exists:users,id',
             'dog_id' => 'required|integer|exists:dogs,dog_id',
             'application_date' => 'required|date',
             'status' => 'nullable|in:Pending,Approved,Rejected',
@@ -38,7 +38,6 @@ class ApplyRequest extends FormRequest
             'work_schedule' => 'required|string',
             'previous_experience' => 'required|string',
             'adoption_reason' => 'required|string'
-        
         ];
     }
 }

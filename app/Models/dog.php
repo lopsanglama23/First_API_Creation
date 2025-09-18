@@ -25,4 +25,8 @@ class Dog extends Model
         'created_by',
         'status',
     ];
+
+    public function applications() {
+        return $this->hasOne(\App\Models\Application::class, 'dog_id', 'dog_id');
+    }
 }

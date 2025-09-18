@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\TestController;
+use App\Models\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DogsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApplyController;
+
 
 //Route::Controller(AuthController)->group(function()){};
 /*Route::post('/register', [AuthController::class, 'register']);
@@ -23,4 +27,14 @@ Route::get('/dogs/see/{term}', [DogsController::class, 'see']);
 Route::get('/dogs/see/{term}', [DogsController::class, 'see']);
 Route::post('/apply', [ApplyController::class, 'apply']);
 
-Route::get('/users/{id}/applications', [ApplyController::class, 'userApplications']);
+Route::get('/users/{id}/applications', [ApplicationController::class, 'userApplications']);
+
+//Admin login resgister api
+
+//Route::get('/user/{id}/applications',[ApplyController::class],'appli')
+Route::post('/adminregister', [AdminController::class, 'adminregister']);
+
+Route::put('/applications/{application_id}/status', [ApplicationController::class, 'updatestatus']);
+
+
+

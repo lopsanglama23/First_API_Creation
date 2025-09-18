@@ -1,18 +1,16 @@
-# Dog Model Update Task
+# Fix Admin Registration 500 Error
 
-## Completed Tasks
-- [x] Read the create_dogs_table migration to understand the table structure
-- [x] Read the current dog.php model to see what needs to be updated
-- [x] Updated the dog model with correct properties:
-  - Removed incorrect traits (HasApiTokens, Notifiable)
-  - Added HasFactory trait
-  - Set $table = 'dogs'
-  - Set $primaryKey = 'dog_id'
-  - Updated $fillable array with correct columns: name, breed, age, gender, size, temperament, description, image_path, created_by, status
+## Issues Identified
+- [x] Admin model doesn't extend Authenticatable and lacks Sanctum traits
+- [x] Incorrect primary key syntax in Admin model
+- [x] Missing password hashing casts in Admin model
+- [ ] Validation rule in AdminController checks 'unique:users' instead of 'unique:admins'
+- [ ] Logout method has syntax error (Auth()->user() instead of auth()->user())
 
-## Next Steps
-- [x] Fixed validation rules in DogsController@adddogs method
-- [ ] Test the dog model in the application
-- [ ] Verify that the model works correctly with the DogsController
-- [ ] Run migrations if not already done
-- [ ] Seed the database with sample dog data if needed
+## Tasks to Complete
+- [x] Update Admin model to extend Authenticatable and add necessary traits
+- [x] Fix primary key syntax in Admin model
+- [x] Add password hashing casts to Admin model
+- [x] Fix validation rule in AdminController
+- [x] Fix logout method syntax in AdminController
+- [ ] Test admin registration functionality

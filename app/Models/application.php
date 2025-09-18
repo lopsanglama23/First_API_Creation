@@ -26,12 +26,10 @@ class Application extends Model
         'previous_experience',
         'adoption_reason'
     ];
-    public function dog() {
-        return $this->belongsTo(Dog::class, 'dog_id');
+   public function dog() {
+        return $this->belongsTo(\App\Models\Dog::class, 'dog_id');
     }
-
     public function user() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
-
 }

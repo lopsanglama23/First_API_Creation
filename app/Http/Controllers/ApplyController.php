@@ -2,43 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApplyRequest;
 use App\Models\application;
 use Illuminate\Http\Request;
 
-class ApplyController extends Controller
+class ApplyController extends BaseController
 {
-    public function apply(Request $request)
+    public function apply(ApplyRequest $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'dog_id' => 'required|integer|exists:dogs,dog_id',
-            'application_date' => 'required|date',
-            'status' => 'nullable|in:Pending,Approved,Rejected',
-            'notes' => 'nullable|string',
-            'full_name' => 'required|string|max:100',
-            'email' => 'required|email|max:100',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string',
-            'housing_type' => 'required|in:House,Apartment,Condo',
-            'has_yard' => 'required|in:Yes,No',
-            'has_children' => 'required|in:Yes,No',
-            'has_other_pets' => 'required|in:Yes,No',
-            'work_schedule' => 'required|string',
-            'previous_experience' => 'required|string',
-            'adoption_reason' => 'required|string'
-        ]);
-        
-        $apply = application::create($validated);
-
-        return response()->json([
-            'message' => 'Application for selected dog is done',
-            'application' => $apply
-        ]);
+        $validated = $request->validated();
+        $apply = Application::create($validated);
+        return $this->sendresponse('application for dog', $apply);
     }
-    public function userApplications($userId)
+    /*public function userApplications($userId)
     {
         $applications = Application::with('dog')->where('user_id', $userId)->get();
-
         return response()->json($applications);
-    }
+    }*/
+    
 }
