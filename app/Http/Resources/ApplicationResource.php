@@ -15,9 +15,12 @@ class ApplicationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'fullname' => $this->name,
             'mail' => $this->email,
             'address' => $this->address,
-        ];
+            'phone' => $this->phone,
+            'housing_type' => $this->housing_type,
+            'has_children' => $this->has_children,
+            
+            ];
     }
 }

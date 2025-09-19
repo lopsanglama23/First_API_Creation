@@ -36,4 +36,14 @@ class ApplicationController extends ResponseController
         return $this->responseSend('Application status Updated Succesfully', $apply);
         
     }
+
+    public function applicants($dog_id){
+        $application = Application::find($dog_id);
+         return response()->json([
+            "message" => "!The Applications for dogs by Adopters!",
+            "data" =>$application
+         ]);
+
+    }
+     
 }
