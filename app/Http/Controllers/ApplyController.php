@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ApplyRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Models\application;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\returnArgument;
 
@@ -22,5 +24,20 @@ class ApplyController extends ResponseController
         $applications = Application::with('dog')->where('user_id', $userId)->get();
         return response()->json($applications);
     }*/
+
+
+    public function applys(ApplyRequest $request){
+        try{
+            DB::beginTransaction();
+            $validated = $request->validated();
+            $apply = Application::create($validated);
+            DB::commit();
+            return $this->responseSend('Dog application Succesfully submitted', $apply);
+        }
+        catch(Exception $ex){
+            DB::rollBack();
+            return $this->responseSend('Failed in process for application', $apply);
+        }
+    }
     
 }

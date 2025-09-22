@@ -14,6 +14,7 @@ class Dog extends Model
     protected $primaryKey = 'dog_id';
 
     protected $fillable = [
+        'admin_id',
         'name',
         'breed',
         'age',
@@ -31,5 +32,8 @@ class Dog extends Model
     public function application()
     {
         return $this->hasMany(\App\Models\Application::class,  'dog_id', 'dog_id');
+    }
+    public function admin(){
+        return $this->belongsTo(\App\Models\Admin::class,'admin_id','id');
     }
 }

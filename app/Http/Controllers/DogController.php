@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DogRequest;
 use App\Http\Resources\DogResourse;
 use App\Models\Dog;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DogController extends BaseController
 {
@@ -14,31 +18,72 @@ class DogController extends BaseController
 
     public function store(DogRequest $request)
     {
-        $validated = $request->validated();
-    //    dd($validated);
-        $dog = Dog::create($validated);
-        return $this->sendResponse("Dog added", DogResourse::make($dog));
+        try {
+            DB::beginTransaction();
+            $validated = $request->validated();
+            $dog = Dog::create($validated);
+            DB::commit();
+            return $this->sendResponse("Dog added successfully", DogResourse::make($dog));
+        } catch (Exception $ex) {
+            DB::rollBack();
+            Log::error('Dog creation failed: ' . $ex->getMessage());
+            return $this->sendResponse('Failed to add dog: ' . $ex->getMessage(), null, 500);
+        }
     }
-
     public function update(DogRequest $request, $id)
     {
-        $validated = $request->validated();
-        $dog = Dog::find($id);
-        if (!$dog) {
-            return response()->json(["message" => "Dog not found"], 404);
+        try {
+            DB::beginTransaction();
+            $validated = $request->validated();
+            $dog = Dog::find($id);
+
+            if (!$dog) {
+                DB::rollBack();
+                return $this->sendResponse("Dog not found", null, 404);
+            }
+
+            $dog->update($validated);
+            DB::commit();
+
+            return $this->sendResponse("Dog updated successfully", DogResourse::make($dog));
+
+        } catch (Exception $ex) {
+            DB::rollBack();
+            Log::error('Dog update failed: ' . $ex->getMessage());
+            return $this->sendResponse('Failed to update dog: ' . $ex->getMessage(), null, 500);
         }
-        $dog->update($validated);
-        return $this->sendResponse("Dog updated", DogResourse::make($dog));
     }
 
     public function delete($id)
     {
-        $dog = Dog::find($id);
-        if (!$dog) {
-            return response()->json(["message" => "Dog not found"], 404);
+        try {
+            DB::beginTransaction();
+            $dog = Dog::find($id);
+
+            if (!$dog) {
+                DB::rollBack();
+                return $this->sendResponse("Dog not found", null, 404);
+            }
+            $hasPendingApplications = $dog->applications()
+                ->where('status', 'Pending')
+                ->exists();
+
+            if ($hasPendingApplications) {
+                DB::rollBack();
+                return $this->sendResponse("Cannot delete dog with pending applications", null, 400);
+            }
+
+            $dog->delete();
+            DB::commit();
+
+            return $this->sendResponse("Dog deleted successfully");
+
+        } catch (Exception $ex) {
+            DB::rollBack();
+            Log::error('Dog deletion failed: ' . $ex->getMessage());
+            return $this->sendResponse('Failed to delete dog: ' . $ex->getMessage(), null, 500);
+            
         }
-        $dog->delete();
-        return response()->json(["message" => "Dog deleted successfully"]);
     }
 
     public function search($name)
@@ -60,8 +105,81 @@ class DogController extends BaseController
         }
         return response()->json($dogs);
     }
-
-    public function seeItemNames(){
-
-    }
 }
+//     public function seeItemNames(){
+
+//     }
+//     <?php
+
+// namespace App\Http\Controllers;
+
+// use App\Http\Requests\DogRequest;
+// use App\Http\Resources\DogResourse;
+// use App\Models\Dog;
+// use Exception;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Log;
+
+// class DogController extends BaseController
+// {
+//     public function update(DogRequest $request, $id)
+//     {
+//         try {
+//             DB::beginTransaction();
+            
+//             $validated = $request->validated();
+//             $dog = Dog::find($id);
+            
+//             if (!$dog) {
+//                 return response()->json(["message" => "Dog not found"], 404);
+//             }
+            
+//             $dog->update($validated);
+//             DB::commit();
+            
+//             return $this->sendResponse("Dog updated", DogResourse::make($dog));
+            
+//         } catch (Exception $ex) {
+//             DB::rollBack();
+//             Log::error('Dog update failed: ' . $ex->getMessage());
+//             return $this->sendResponse('Failed to update dog: ' . $ex->getMessage(), null, 500);
+//         }
+//     }
+
+    // public function delete($id)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+            
+    //         $dog = Dog::find($id);
+            
+    //         if (!$dog) {
+    //             return response()->json(["message" => "Dog not found"], 404);
+    //         }
+            
+    //         // Check if dog has pending applications
+    //         $hasPendingApplications = $dog->applications()
+    //             ->where('status', 'Pending')
+    //             ->exists();
+                
+    //         if ($hasPendingApplications) {
+    //             return response()->json([
+    //                 "message" => "Cannot delete dog with pending applications"
+    //             ], 400);
+    //         }
+            
+    //         $dog->delete();
+    //         DB::commit();
+            
+    //         return response()->json(["message" => "Dog deleted successfully"]);
+            
+    //     } catch (Exception $ex) {
+    //         DB::rollBack();
+    //         Log::error('Dog deletion failed: ' . $ex->getMessage());
+    //         return response()->json([
+    //             "message" => "Failed to delete dog: " . $ex->getMessage()
+    //         ], 500);
+    //     }
+    // }
+

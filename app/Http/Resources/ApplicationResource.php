@@ -19,8 +19,7 @@ class ApplicationResource extends JsonResource
             'address' => $this->address,
             'phone' => $this->phone,
             'housing_type' => $this->housing_type,
-            'has_children' => $this->has_children,
-            
+            'has_children' => $this->has_children,          
             ];
     }
 }

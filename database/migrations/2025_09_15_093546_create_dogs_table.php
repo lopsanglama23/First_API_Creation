@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('dogs', function (Blueprint $table) {
             $table->increments('dog_id'); 
+            $table->unsignedInteger('admin_id'); 
             $table->string('name', 50);
             $table->string('breed', 50);
             $table->integer('age');
