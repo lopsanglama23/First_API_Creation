@@ -21,9 +21,9 @@ class DogRequest extends FormRequest
      */
     public function rules(): array
     {
-            if($this->ismethod('post')){
+        if ($this->isMethod('post')) {
             return [
-                'name'        => 'required|string|max:50',
+                'name'        => 'required|string|max:50|unique:dogs,name',
                 'breed'       => 'required|string|max:50',
                 'age'         => 'required|integer|min:0',
                 'gender'      => 'required|in:Male,Female',
@@ -33,25 +33,46 @@ class DogRequest extends FormRequest
                 'image_path'  => 'nullable|string|max:255',
                 'created_by'  => 'nullable|integer|exists:users,id',
                 'status'      => 'required|in:Available,Unavailable',
-        
             ];
         }
-        if($this->isMethod('put')){
-            return[
-            'name'        => 'required|string|max:50',
-            'breed'       => 'required|string|max:50',
-            'age'         => 'required|integer|min:0',
-            'gender'      => 'required|in:Male,Female',
-            'size'        => 'required|in:Small,Medium,Large,Extra Large',
-            'temperament' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image_path'  => 'nullable|string|max:255',
-            'created_by'  => 'nullable|integer|exists:users,id',
-            'status'      => 'required|in:Available,Unavailable',
+        if ($this->isMethod('put')) {
+            return [
+                'name'        => 'required|string|unique|max:50',
+                'breed'       => 'required|string|max:50',
+                'age'         => 'required|integer|min:0',
+                'gender'      => 'required|in:Male,Female',
+                'size'        => 'required|in:Small,Medium,Large,Extra Large',
+                'temperament' => 'nullable|string|max:255',
+                'description' => 'nullable|string',
+                'image_path'  => 'nullable|string|max:255',
+                'created_by'  => 'nullable|integer|exists:users,id',
+                'status'      => 'required|in:Available,Unavailable'
             ];
         }
-
-        return[];
-    }
     
-}
+        return [];
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Dog name is required.',
+            'name.unique' => 'A dog with this name already exists in the system.',
+            'name.max' => 'Dog name cannot exceed 50 characters.',
+            'breed.required' => 'Dog breed is required.',
+            'age.required' => 'Dog age is required.',
+            'age.integer' => 'Dog age must be a number.',
+            'age.min' => 'Dog age cannot be negative.',
+            'age.max' => 'Dog age cannot exceed 30 years.',
+            'gender.required' => 'Dog gender is required.',
+            'gender.in' => 'Gender must be either Male or Female.',
+            'size.required' => 'Dog size is required.',
+            'size.in' => 'Size must be Small, Medium, Large, or Extra Large.',
+            'status.required' => 'Dog status is required.',
+            'status.in' => 'Status must be either Available or Unavailable.',
+            'created_by.exists' => 'The selected user does not exist.',
+        ];
+    }
+ }
+
+    
+

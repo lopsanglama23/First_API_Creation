@@ -21,10 +21,5 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-
-        // Run the CV seeder
-        $this->call([
-            CvSeeder::class,
-        ]);
     }
 }

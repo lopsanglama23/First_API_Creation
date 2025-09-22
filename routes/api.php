@@ -19,12 +19,12 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 
 /*Route::controller(DogsController::class)->prefix('dogs')->group(function () */
-Route::middleware('role')->group(function () {
+//Route::middleware('role')->group(function () {
     Route::post('/dogs', [DogController::class, 'store']);
     Route::put('/dogs/{id}', [DogController::class, 'update']);
     Route::delete('/dogs/{id}', [DogController::class, 'delete']);
     
-});
+//});
 
 Route::get('/dogs',[ViewController::class, 'view']);
 
