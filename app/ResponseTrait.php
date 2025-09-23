@@ -7,7 +7,7 @@ trait ResponseTrait
     public function successResponse($data, $message, $status = 200){
         return response()->json([
             "data"=> $data,
-            "message"=> "sucess",
+            "message"=> "success",
         ], $status);
     }
 

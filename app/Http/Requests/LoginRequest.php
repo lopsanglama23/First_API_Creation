@@ -27,7 +27,11 @@ class LoginRequest extends FormRequest
         ];
     }
     public function message(){
-      
+      return [
+            'email.required' => 'Email field is Required',
+            'password.rquired' => 'Password field is Required',
+            'password.min' => 'Password  is should be minimun 8',
+      ];
     }
 
 }

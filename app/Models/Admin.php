@@ -36,4 +36,16 @@ class Admin extends Authenticatable
         return $this->hasMany(\App\Models\Dog::class, 'admin_id', 'id');
     }
 
+    public function applications()
+{
+    return $this->hasManyThrough(
+        \App\Models\Application::class,
+        \App\Models\Dog::class,
+        'admin_id', // Foreign key on dogs table
+        'dog_id',   // Foreign key on applications table
+        'id',       // Local key on admins table
+        'dog_id'    // Local key on dogs table
+    );
+}
+
 }
