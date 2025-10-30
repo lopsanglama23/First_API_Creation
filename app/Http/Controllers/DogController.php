@@ -19,6 +19,7 @@ class DogController extends BaseController
     public function store(DogRequest $request)
     {
         try {
+            // <-----Database Transaction in CURD API (CREATE)------>
             DB::beginTransaction();
             $validated = $request->validated();
             $dog = Dog::create($validated);
@@ -33,6 +34,7 @@ class DogController extends BaseController
     public function update(DogRequest $request, $id)
     {
         try {
+            // <-----Database Transaction in CURD API (UPDATE)------>
             DB::beginTransaction();
             $validated = $request->validated();
             $dog = Dog::find($id);
@@ -57,6 +59,7 @@ class DogController extends BaseController
     public function delete($id)
     {
         try {
+            // <-----Database Transaction in CURD API (DELETE)------>
             DB::beginTransaction();
             $dog = Dog::find($id);
 
