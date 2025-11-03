@@ -10,7 +10,6 @@ trait ResponseTrait
             "message"=> "success",
         ], $status);
     }
-
     public function errorResponse($message, $status = 400){
             return response()->json([
                 "message"=>"error"

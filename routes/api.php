@@ -16,7 +16,8 @@ use App\Http\Controllers\ApplyController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
+// Route::get('/cache/{user}',[AuthController::class,'dashboard']);
+Route::get('/welcome/{user}', [AuthController::class, 'welcomeMessage']);
 
 /*Route::controller(DogsController::class)->prefix('dogs')->group(function () */
 //Route::middleware('role')->group(function () {
