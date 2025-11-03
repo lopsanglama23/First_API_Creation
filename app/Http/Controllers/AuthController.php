@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Jobs\SendWelcomeEmail;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -27,6 +28,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        SendWelcomeEmail::dispatch($user);
         return response()->json([
             'status' => true,
             'message' => 'User registered successfully',
@@ -59,4 +61,17 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
+    public function WelcomeMessage(User $user)
+    {
+        $message = Cache::get('welcome_message_'.$user->id);
+
+        if (!$message) {
+            $message = 'Welcome '.$user->name;
+        }
+
+        return response()->json([
+            'user_id' => $user->id,
+            'welcome_message' => $message
+        ]);
+    }
 }

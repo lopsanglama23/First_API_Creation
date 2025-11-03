@@ -23,7 +23,7 @@ class DogRequest extends FormRequest
     {
         if ($this->isMethod('post')) {
             return [
-                'name'        => 'required|string|max:50|unique:dogs,name',
+                'name'        => 'required|string|max:50|unique:dogs,nnnname',
                 'breed'       => 'required|string|max:50',
                 'age'         => 'required|integer|min:0',
                 'gender'      => 'required|in:Male,Female',
