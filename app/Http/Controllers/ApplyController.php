@@ -2,29 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ApplicationExport;
 use App\Http\Requests\ApplyRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Models\application;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Exception;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\returnArgument;
 
 class ApplyController extends ResponseController
 {
-    public function apply(ApplyRequest $request)
-    {
-        $validated = $request->validated();
-        $apply = Application::create($validated);
-        //return $this->sendresponse('application for dog', $apply);
-        return $this->responseSend('applicaation for dog', ApplicationResource::make($apply));
-    }
-    /*public function userApplications($userId)
-    {
-        $applications = Application::with('dog')->where('user_id', $userId)->get();
-        return response()->json($applications);
-    }*/
-
+    // public function apply(ApplyRequest $request)
+    // {
+    //     $validated = $request->validated();
+    //     $apply = Application::create($validated);
+    //     //return $this->sendresponse('application for dog', $apply);
+    //     return $this->responseSend('applicaation for dog', ApplicationResource::make($apply));
+    // }
+    // /*public function userApplications($userId)
+    // {
+    //     $applications = Application::with('dog')->where('user_id', $userId)->get();
+    //     return response()->json($applications);
+    // }*/
 
     public function applys(ApplyRequest $request){
         try{
@@ -38,6 +40,10 @@ class ApplyController extends ResponseController
             DB::rollBack();
             return $this->responseSend('Failed in process for application', $apply);
         }
+    }
+
+    public function applicationExport($status){
+        return Excel::download(new ApplicationExport($status),'applications.xlsx');
     }
     
 }

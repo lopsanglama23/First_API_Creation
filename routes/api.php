@@ -46,4 +46,5 @@ Route::put('/applications/{application_id}/status', [ApplicationController::clas
 Route::get('/applicants/{dog_id}',[ApplicationController::class,'applicants']);
 
 Route::post('/applys',[ApplyController::class,'applys']);
+Route::get('/exports/{status}',[ApplyController::class,'applicationExport']);
 
