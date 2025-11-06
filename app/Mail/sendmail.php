@@ -40,6 +40,9 @@ class sendmail extends Mailable
     {
         return new Content(
             view: 'mail.sendemail',
+        //     with: [
+        //     'user' => $this->user,
+        // ],
         );
     }
 

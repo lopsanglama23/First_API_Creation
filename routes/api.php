@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\messageController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewController;
 use App\Models\Application;
@@ -20,12 +21,11 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::get('/welcome/{user}', [AuthController::class, 'welcomeMessage']);
 
 /*Route::controller(DogsController::class)->prefix('dogs')->group(function () */
-//Route::middleware('role')->group(function () {
+Route::middleware(['Atuh:sanctum','role:admin'])->group(function () {
     Route::post('/dogs', [DogController::class, 'store']);
     Route::put('/dogs/{id}', [DogController::class, 'update']);
     Route::delete('/dogs/{id}', [DogController::class, 'delete']);
-    
-//});
+});
 
 Route::get('/dogs',[ViewController::class, 'view']);
 

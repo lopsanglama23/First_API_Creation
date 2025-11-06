@@ -4,8 +4,10 @@ namespace App\Exports;
 
 use App\Models\Application;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ApplicationExport implements FromCollection
+class ApplicationExport implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection

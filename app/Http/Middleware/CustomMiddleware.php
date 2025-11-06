@@ -16,13 +16,7 @@ class CustomMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // if($request->role === "Admin"){
-        //     return response()->json([
-        //         'message'=> 'You Can perform your task'
-        //     ]);
-        // }
-        // return $next($request);
-        $user = Auth::user(); 
+    
         if ($user && $user->role === 'admin') {
             return $next($request); 
         }
@@ -30,13 +24,22 @@ class CustomMiddleware
             'message' => 'You are not authorized to perform this action.'
         ], 403);
 
-        // $role = $request->header('role');
+    }
+    
+}
+
+
+        // if($request->role === "Admin"){
+        //     return response()->json([
+        //         'message'=> 'You Can perform your task'
+        //     ]);
+        // }
+        // return $next($request);
+
+         // $role = $request->header('role');
         // if ($role === 'admin') {
         //     return $next($request); 
         // }
         // return response()->json([
         //     'message' => 'You are not authorized to perform this action.'
         // ], 403);
-    }
-    
-}
