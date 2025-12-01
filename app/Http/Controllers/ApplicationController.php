@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Resources\ApplicationResource;
-use App\Models\application;
+use App\Models\Application;
 use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +17,8 @@ class ApplicationController extends ResponseController
             //return response()->json($applications);
             return $this->responseSend("Aplications for dog." ,$applications);
             //return response()->json(ApplicationResource::make($applications));
+        } catch (Exception $ex) {
+            return $this->responseSend('Failed to fetch applications', null);
         }
     }
 
@@ -44,16 +46,16 @@ class ApplicationController extends ResponseController
         }
         catch(Exception $ex){
             DB::rollBack();
-            return $this->responseSend('Application Updated Failed', $apply);
+            return $this->responseSend('Application Updated Failed', null);
         }
         
     }
 
     public function applicants($dog_id){
-        $application = Application::find($dog_id);
+        $applications = Application::where('dog_id', $dog_id)->get();
          return response()->json([
             "message" => "!The Applications for dogs by Adopters!",
-            "data" =>$application
+            "data" => $applications
          ]);
     }     
 }

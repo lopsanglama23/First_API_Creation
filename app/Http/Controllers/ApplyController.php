@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ApplicationExport;
 use App\Http\Requests\ApplyRequest;
 use App\Http\Resources\ApplicationResource;
-use App\Models\application;
+use App\Models\Application;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -38,7 +38,7 @@ class ApplyController extends ResponseController
         }
         catch(Exception $ex){
             DB::rollBack();
-            return $this->responseSend('Failed in process for application', $apply);
+            return $this->responseSend('Failed in process for application', null);
         }
     }
 
