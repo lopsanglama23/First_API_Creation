@@ -27,7 +27,7 @@ class Dog extends Model
     ];
     
     public function applications() {
-        return $this->hasOne(\App\Models\Application::class, 'dog_id', 'dog_id');
+        return $this->hasMany(\App\Models\Application::class, 'dog_id', 'dog_id');
     }
     // public function application()
     // {

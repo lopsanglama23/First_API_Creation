@@ -22,6 +22,11 @@ class DogController extends BaseController
             // <-----Database Transaction in CURD API (CREATE)------>
             DB::beginTransaction();
             $validated = $request->validated();
+
+            if($request->hasFile('image_path')){
+                $validated['image_path'] = $request->file('image_path')->store('dogs', 'public');
+            }
+            
             $dog = Dog::create($validated);
             DB::commit();
             return $this->sendResponse("Dog added successfully", DogResourse::make($dog));
