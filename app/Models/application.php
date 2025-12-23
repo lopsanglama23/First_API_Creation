@@ -27,6 +27,7 @@ class Application extends Model
         'adoption_reason'
     ];
    public function dog() {
+        //return $this->belongsTo(\App\Models\Dog::class, 'dog_id');
         return $this->belongsTo(\App\Models\Dog::class, 'dog_id', 'dog_id');
     }
     public function user() {
