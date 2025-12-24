@@ -1,7 +1,7 @@
 <?php
 
 use App\Events\MessageSent;
-use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PdfController;
@@ -44,12 +44,18 @@ Route::get('/admin-login',[LoginController::class,'loginShow'])->name('admin');
 
 // Route::get('/exports/{status}', [ApplyController::class, 'applicationExport'])->name('applications.export');
 
-Route::get('/auth', function () {
-    return view('auth.login');
-});
+// Route::get('/auth', function () {
+//     return view('auth.login');
+// });
+Route::get('auth/login',[LoginController::class,'showlogin'])->name('auth.login');
+Route::post('auth/login',[LoginController::class,'login'])->name('login');
 
+Route::get('/test-fcm', function () {
+    return view('test-fcm');
+})->middleware('auth');
 
-//Route::get('/login',[LoginControllera::class,'showlogin'])->name('auth.login');
-Route::post('/login',[LoginController::class,'login'])->name('login');
+Route::post('/save-fcm-token', [App\Http\Controllers\FcmTestController::class, 'saveToken'])
+    ->middleware('auth');
 
-
+Route::post('/send-fcm-notification', [App\Http\Controllers\FcmTestController::class, 'sendNotification'])
+    ->middleware('auth');
