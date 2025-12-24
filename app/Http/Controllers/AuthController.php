@@ -19,13 +19,15 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' =>'required|string',
+            'fcm_token' => 'nullable|string',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role, 
+            'role' => $request->role,
+            'fcm_token' => $request->fcm_token,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
