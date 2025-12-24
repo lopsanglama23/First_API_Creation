@@ -18,6 +18,3 @@ if ($result === FALSE) {
     echo "Warning: Endpoint is not protected!\n";
     echo "Response: " . $result . "\n";
 }
-
-
-

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\messageController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewController;
 use App\Models\Application;
@@ -9,23 +10,27 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApplyController;
-
+use App\Services\FirebaseNotificationService;
+use Illuminate\Http\Request;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 
 //Route::Controller(AuthController)->group(function()){};
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logins', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 // Route::get('/cache/{user}',[AuthController::class,'dashboard']);
 Route::get('/welcome/{user}', [AuthController::class, 'welcomeMessage']);
 
 /*Route::controller(DogsController::class)->prefix('dogs')->group(function () */
-Route::middleware('role')->group(function () {
+//Route::middleware('role')->group(function () {
     Route::post('/dogs', [DogController::class, 'store']);
     Route::put('/dogs/{id}', [DogController::class, 'update']);
     Route::delete('/dogs/{id}', [DogController::class, 'delete']);
     
-});
+//});
 
 Route::get('/dogs',[ViewController::class, 'view']);
 
@@ -47,4 +52,3 @@ Route::get('/applicants/{dog_id}',[ApplicationController::class,'applicants']);
 
 Route::post('/applys',[ApplyController::class,'applys']);
 Route::get('/exports/{status}',[ApplyController::class,'applicationExport']);
-
