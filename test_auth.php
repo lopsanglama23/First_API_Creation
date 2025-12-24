@@ -23,3 +23,4 @@ if ($result === FALSE) {
 } else {
     echo "Response: " . $result . "\n";
 }
+

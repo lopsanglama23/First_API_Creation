@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Jobs\SendWelcomeEmail;
+use App\Jobs\SendFirebaseNotification;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
@@ -28,7 +29,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
-        SendWelcomeEmail::dispatch($user);
+
         return response()->json([
             'status' => true,
             'message' => 'User registered successfully',
@@ -37,12 +38,18 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        $validated = $request->validated(); 
-        $user = User::where('email', $request->email)->first();
+        $data = $request->json()->all(); // read raw JSON
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        $validated = validator($data, [
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8',
+        ])->validate();
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -54,6 +61,7 @@ class AuthController extends Controller
             'token' => $token
         ], 200);
     }
+
     public function logout(Request $request)
     {    
         $user=Auth()->user();
