@@ -10,10 +10,13 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends ResponseController
 {
-    public function userApplications($userId)
+    public function userApplications(Request $request,$userId)
     {
         try{
-            $applications = Application::with('dog')->where('user_id', $userId)->get();
+            $perpage = $request->query('per_page' ,5);
+            $applications = Application::with('dog')
+                ->where('user_id', $userId)
+                ->paginate($perpage);
             //return response()->json($applications);
             return $this->responseSend("Aplications for dog." ,$applications);
             //return response()->json(ApplicationResource::make($applications));
@@ -51,11 +54,35 @@ class ApplicationController extends ResponseController
         
     }
 
-    public function applicants($dog_id){
-        $applications = Application::where('dog_id', $dog_id)->get();
-         return response()->json([
-            "message" => "!The Applications for dogs by Adopters!",
-            "data" => $applications
-         ]);
-    }     
+  public function applicants(Request $request, $dog_id)
+    {
+        try {
+            $perPage = $request->query('perpage', 5); 
+
+            $applications = Application::with('user') 
+                                    ->where('dog_id', $dog_id)
+                                    ->paginate($perPage);
+
+            return response()->json([
+                "message" => "The Applications for this dog by adopters",
+                "data" => $applications->items(), 
+                "meta" => [
+                    "current_page" => $applications->currentPage(),
+                    "per_page" => $applications->perPage(),
+                    "total" => $applications->total(),
+                    "last_page" => $applications->lastPage(),
+                    "next_page_url" => $applications->nextPageUrl(),
+                    "prev_page_url" => $applications->previousPageUrl()
+                ]
+            ]);
+
+        } catch (Exception $ex) {
+            return response()->json([
+                "message" => "Failed to fetch applications",
+                "data" => null,
+                "meta" => null
+            ], 500);
+        }
+    }
+  
 }
