@@ -1,11 +1,13 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\DogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\UserController;
+use App\Models\Dog;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +25,10 @@ Route::get('/home', function () {
 Route::get('/export-users',[UserController::class,'index']);
 Route::get('/exports/{status}',[ApplyController::class,'applicationExport']);
 Route::get('/pdf/{id}',[PdfController::class,'pdfGenerator']);
+//
+//Route::get('/dogsexports/{id}',[DogController::class,'dogExport']);
+//
+Route::get('/dogsexports', [DogController::class, 'dogsExport']);
 
 
     Route::get('/send-message', function(){

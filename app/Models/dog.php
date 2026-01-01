@@ -10,7 +10,8 @@ class Dog extends Model
     use HasFactory;
 
     protected $table = 'dogs';
-
+    public $incrementing = true;
+    protected $keyType = 'int';
     protected $primaryKey = 'dog_id';
 
     protected $fillable = [
