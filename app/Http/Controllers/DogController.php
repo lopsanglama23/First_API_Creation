@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\DogExport;
 use App\Http\Requests\DogRequest;
 use App\Http\Resources\DogResourse;
 use App\Models\Dog;
@@ -8,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DogController extends BaseController
 {
@@ -112,6 +114,16 @@ class DogController extends BaseController
             return response()->json(["message" => "No dogs found"]);
         }
         return response()->json($dogs);
+    }
+
+
+    // public function dogExport($id){
+    //     return Excel::download(new DogExport($id),'dog_'.$id.'dogs.xlsx');
+    // }
+
+    public function dogsExport()
+    {
+        return Excel::download(new DogExport, 'dogs.xlsx');
     }
 }
 //     public function seeItemNames(){

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\DogImportController;
 use App\Http\Controllers\messageController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewController;
@@ -52,3 +53,5 @@ Route::get('/applicants/{dog_id}',[ApplicationController::class,'applicants']);
 
 Route::post('/applys',[ApplyController::class,'applys']);
 Route::get('/exports/{status}',[ApplyController::class,'applicationExport']);
+// 
+Route::post('/import',[DogImportController::class,'dogImport']);
