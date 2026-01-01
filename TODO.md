@@ -2,3 +2,4 @@
 - [x] Add web route for sending FCM notifications
 - [x] Update public/firebase-messaging-sw.js to use config values
 - [ ] Test FCM token generation and notification sending
+

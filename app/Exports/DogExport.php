@@ -10,10 +10,10 @@ class DogExport implements FromCollection, WithHeadings
     /**
     * @return \Illuminate\Support\Collection
     */
-    protected $id;
-    public function __construct($id) {
-        $this->id = $id;
-    }
+    //protected $id;
+    // public function __construct($id) {
+    //     $this->id = $id;
+    // }
     public function collection()
     {
         // ensure we use the injected id and return a Collection
