@@ -65,3 +65,17 @@ Route::post('/save-fcm-token', [App\Http\Controllers\FcmTestController::class, '
 
 Route::post('/send-fcm-notification', [App\Http\Controllers\FcmTestController::class, 'sendNotification'])
     ->middleware('auth');
+
+// laravel socilaite package implementation
+use App\Http\Controllers\SocialAuthController;
+
+
+Route::get('/logged', function () {
+    return view('login');
+});
+
+
+
+Route::get('/login/{provider}', [SocialAuthController::class, 'redirect']);
+Route::get('/login/{provider}/callback', [SocialAuthController::class, 'callback']);
+
