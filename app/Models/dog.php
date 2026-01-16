@@ -26,7 +26,7 @@ class Dog extends Model
             'created_by',
             'status',
     ];
-    
+
     public function applications() {
         return $this->hasMany(\App\Models\Application::class, 'dog_id', 'dog_id');
     }
@@ -38,17 +38,4 @@ class Dog extends Model
         return $this->belongsTo(\App\Models\Admin::class,'created_by','id');
     }
 
-    // public function messages(): array
-    // {
-    //     return [
-    //         'name.unique' => 'A dog with this name already exists in the system.',
-    //         'name.required' => 'Dog name is required.',
-    //         'name.max' => 'Dog name cannot exceed 50 characters.',
-    //         'age.min' => 'Dog age cannot be negative.',
-    //         'age.max' => 'Dog age cannot exceed 30 years.',
-    //         'gender.in' => 'Gender must be either Male or Female.',
-    //         'size.in' => 'Size must be Small, Medium, Large, or Extra Large.',
-    //         'status.in' => 'Status must be either Available or Unavailable.',
-    //     ];
-    // }
 }
